@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import posts from './reducers/postsReducer'
+import noteReducer from './reducers/noteReducer'
+import topicReducer from './reducers/topicReducer'
 
 // todo
 // use caseReducer to bring out loading, and error to the front of the store
@@ -7,7 +8,8 @@ import posts from './reducers/postsReducer'
 
 export const store = configureStore({
   reducer: {
-    posts: posts.reducer,
+    note: noteReducer.reducer,
+    topic: topicReducer.reducer,
   },
 })
 

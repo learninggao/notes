@@ -1,44 +1,40 @@
 import { createAction, createSlice } from '@reduxjs/toolkit'
 import { Topic } from '../../../backend/db/model'
-import { fetchPosts } from '../actions'
+import { fetchTopics } from '../actions'
 
 type APPState = {
-  activePost: null | Topic
-  activePostIndex: number
-  activePostId: number
-  extraScreens: string[]
+  activeTopicId: number
+  activeTopicIndex: number
   status: 'loading' | 'idle'
   error: string | null
   list: Topic[]
-  postCount: number
 }
 
 const initialState: APPState = {
-  activePost: null,
-  activePostId: -1,
-  activePostIndex: -1,
+  activeTopicId: -1,
+  activeTopicIndex: -1,
   error: null,
-  extraScreens: [],
   list: [] as Topic[],
-  postCount: 0,
   status: 'idle',
 }
 
-const postsReducer = createSlice({
+const topicReducer = createSlice({
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPosts.pending, (state) => {
+      .addCase(fetchTopics.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
-      .addCase(fetchPosts.fulfilled, (state, { payload }) => {
+      .addCase(fetchTopics.fulfilled, (state, { payload }) => {
         state.status = 'idle'
         state.list = payload
+        state.activeTopicId = payload[0].id
+        state.activeTopicIndex = 0
       })
   },
   initialState,
-  name: 'posts',
+  name: 'topic',
   reducers: {},
 })
 
-export default postsReducer
+export default topicReducer

@@ -18,6 +18,14 @@ function transformer(noteDb: NoteDb): Note {
 export class NotesRepository {
   constructor(private db: IDatabase<any>, private pgp: IMain) {}
 
+  async getByTopic(id: number): Promise<Note[]> {
+    return this.db.map(
+      'SELECT * from note where topic_id = $1',
+      [id],
+      transformer
+    )
+  }
+
   async getById(id: number): Promise<NoteDb> {
     return this.db.one('SELECT * From note where id = $1', [id])
   }
