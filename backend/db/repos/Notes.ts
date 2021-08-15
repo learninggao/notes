@@ -1,5 +1,19 @@
+import cloneDeep from 'clone-deep'
 import { IDatabase, IMain } from 'pg-promise'
-import { NoteDb } from '../model'
+import { Note, NoteDb } from '../model'
+
+function transformer(noteDb: NoteDb): Note {
+  const tNote: Partial<NoteDb & Note> = cloneDeep(noteDb)
+  tNote.defaultOrder = tNote.default_order
+  tNote.customOrder = tNote.custom_order
+  tNote.createdAt = tNote.created_at
+  tNote.topicId = tNote.topic_id
+  delete tNote.default_order
+  delete tNote.custom_order
+  delete tNote.created_at
+  delete tNote.topic_id
+  return tNote as Note
+}
 
 export class NotesRepository {
   constructor(private db: IDatabase<any>, private pgp: IMain) {}
@@ -8,8 +22,8 @@ export class NotesRepository {
     return this.db.one('SELECT * From note where id = $1', [id])
   }
 
-  async getAll(): Promise<NoteDb[]> {
-    return this.db.many('SELECT * from note')
+  async getAll(): Promise<Note[]> {
+    return this.db.map('SELECT * from note', [], transformer)
   }
 
   async updateOne(params: {
