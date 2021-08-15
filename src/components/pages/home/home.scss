@@ -1,0 +1,57 @@
+@import '~scss/variables';
+.main-wrapper {
+  display: flex;
+
+  .side-nav-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 49px);
+
+    .main-head {
+      padding: 10px;
+      border: 1px solid $border-gray;
+    }
+
+    .main-area {
+      height: 100%;
+      display: flex;
+    }
+
+    .oreo-section {
+      position: relative;
+      height: 100%;
+      border: 1px solid $border-gray;
+      border-top: none;
+      min-width: 150px;
+
+      &.notes {
+        min-width: 300px;
+      }
+
+      &:first-of-type {
+        border-right: none;
+      }
+
+      .oreo-body {
+        height: calc(100% - 32px);
+      }
+
+      .oreo-item {
+        padding: 5px 10px 5px 15px;
+        border-bottom: 1px solid $border-gray;
+        cursor: pointer;
+
+        &:hover {
+          background: darken(#eee, 5%);
+        }
+      }
+
+      .oreo-foot {
+        .oreo-item {
+          border-top: 1px solid $border-gray;
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}

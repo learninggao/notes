@@ -3,7 +3,7 @@ header.bulma-modal-head {
 }
 
 .modal-card {
-  width: 85vw;
+  min-width: 80vw;
 
   &.confirm {
     width: 500px;
@@ -12,11 +12,6 @@ header.bulma-modal-head {
   .modal-card-foot {
     padding: 1rem;
   }
-}
-
-.modal.screens {
-  top: 50px;
-  justify-content: flex-start;
 }
 
 /* variations */

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+// const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const webpack = require('webpack')
 
@@ -9,8 +9,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx$|\.ts$/,
         exclude: /node_modules/,
+        test: /\.tsx$|\.ts$/,
         use: ['babel-loader'],
       },
       {
@@ -20,7 +20,9 @@ module.exports = {
           'css-loader',
           {
             loader: 'sass-loader',
-            options: { implementation: require('sass') }, // eslint-disable-line global-require
+            options: {
+              implementation: require('sass'), // eslint-disable-line global-require
+            },
           },
         ],
       },
@@ -38,21 +40,10 @@ module.exports = {
       },
     ],
   },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
-    alias: {
-      'react-dom': '@hot-loader/react-dom',
-      // '@': path.resolve(__dirname, 'src'),
-      Components: path.resolve(__dirname, 'src/Components'),
-      // Contexts: path.resolve(__dirname, 'src/components/contexts'),
-      // Core: path.resolve(__dirname, 'src/components/core'),
-      // Pages: path.resolve(__dirname, 'src/components/Pages'),
-      // Utils: path.resolve(__dirname, 'src/utils'),
-      // Root: path.resolve(__dirname),
-      scss: path.resolve(__dirname, 'src/scss'),
-      // Api: path.resolve(__dirname, 'src/api'),
-      // Images: path.resolve(__dirname, 'src/images'),
-    },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
   },
   plugins: [
     // new webpack.NormalModuleReplacementPlugin(/debug/, `${process.cwd()}/support/noop.js`),
@@ -62,9 +53,11 @@ module.exports = {
     // }),
     new webpack.HotModuleReplacementPlugin(),
   ],
-  output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
+  resolve: {
+    alias: {
+      'react-dom': '@hot-loader/react-dom',
+      scss: path.resolve(__dirname, 'src/scss'),
+    },
+    extensions: ['.ts', '.tsx', '.js'],
   },
 }

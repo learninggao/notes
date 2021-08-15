@@ -14,7 +14,7 @@ const pgp: IMain = pgPromise(initOptions)
 
 const db: ExtendedProtocol = pgp({
   // host: 'localhost',
-  database: 'plab',
+  database: 'notes',
   host: process.env.NODE_ENV === 'production' ? 'postgres' : 'localhost',
   password: 'gaoban',
   port: 5432,

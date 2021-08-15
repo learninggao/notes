@@ -1,35 +1,30 @@
 import { createAction, createSlice } from '@reduxjs/toolkit'
-import {
-  fetchPosts,
-} from '../actions'
-import { PlabPost } from '../models/post'
+import { Topic } from '../../../backend/db/model'
+import { fetchPosts } from '../actions'
 
 type APPState = {
-  activePost: null | PlabPost
+  activePost: null | Topic
   activePostIndex: number
   activePostId: number
   extraScreens: string[]
   status: 'loading' | 'idle'
   error: string | null
-  list: PlabPost[]
+  list: Topic[]
   postCount: number
 }
 
 const initialState: APPState = {
   activePost: null,
-  activePostIndex: -1,
   activePostId: -1,
+  activePostIndex: -1,
   error: null,
   extraScreens: [],
-  list: [] as PlabPost[],
-  status: 'idle',
+  list: [] as Topic[],
   postCount: 0,
+  status: 'idle',
 }
 
 const postsReducer = createSlice({
-  name: 'posts',
-  initialState,
-  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchPosts.pending, (state) => {
@@ -41,6 +36,9 @@ const postsReducer = createSlice({
         state.list = payload
       })
   },
+  initialState,
+  name: 'posts',
+  reducers: {},
 })
 
 export default postsReducer

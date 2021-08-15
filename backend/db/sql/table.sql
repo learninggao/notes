@@ -9,11 +9,12 @@ create table topic (
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- linke | code | image | exercise
+-- link | code | image | exercise
 create table note_type (
   type TEXT PRIMARY KEY
 );
 
+-- bootstrap | basic | intermediate | advanced | misc
 create table note_level (
   level TEXT PRIMARY KEY
 );
@@ -47,5 +48,11 @@ create table note_tag (
   tag_id integer REFERENCES tag (id)
 );
 
+-- later actions
+
+ALTER TABLE "note"
+ALTER "level" TYPE text,
+ALTER "level" SET DEFAULT 'misc',
+ALTER "level" DROP NOT NULL;
 
 

@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "default_order": 1,
+    "custom_order": 10000,
+    "type": "link",
+    "description": "This is a test note",
+    "url": "https://google.com",
+    "level": "misc",
+    "content": "",
+    "created_at": "2021-08-15T18:02:30.342Z",
+    "title": "Link no. 1",
+    "tags": [],
+    "notes": [],
+    "todos": [],
+    "topic_id": 1
+  }
+]
