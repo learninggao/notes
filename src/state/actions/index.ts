@@ -24,4 +24,15 @@ export const fetchNotesForTopic = createAsyncThunk(
   }
 )
 
+export const fetchCreateTopic = createAsyncThunk(
+  'create_topic',
+  async (topicName: string) => {
+    const requestURL = `${API_URL}/topic`
+    const { data } = await axios.post<Topic>(requestURL, {
+      topicName,
+    })
+    return data
+  }
+)
+
 /* notes */

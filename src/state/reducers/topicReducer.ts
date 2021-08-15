@@ -1,6 +1,6 @@
 import { createAction, createSlice } from '@reduxjs/toolkit'
 import { Topic } from '../../../backend/db/model'
-import { fetchTopics } from '../actions'
+import { fetchCreateTopic, fetchTopics } from '../actions'
 
 type APPState = {
   activeTopicId: number
@@ -30,6 +30,15 @@ const topicReducer = createSlice({
         state.list = payload
         state.activeTopicId = payload[0].id
         state.activeTopicIndex = 0
+      })
+      .addCase(fetchCreateTopic.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(fetchCreateTopic.fulfilled, (state, { payload }) => {
+        const topic = payload
+        state.list.push(topic)
+        state.status = 'idle'
       })
   },
   initialState,

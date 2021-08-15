@@ -2,7 +2,6 @@ import React from 'react'
 import cn from 'classnames'
 import './modal.scss'
 import { Portal } from '../portal/Portal'
-import { callAll } from '../../helpers/callAll'
 
 export type ModalType = 'default' | 'confirm'
 
@@ -41,9 +40,9 @@ export const Modal: React.FC<ModalProps> = ({
               {onClick && (
                 <button
                   className="button is-success is-light is-outlined"
-                  onClick={callAll(onClick, onClose)}
+                  onClick={onClick}
                 >
-                  Confirm
+                  Ok
                 </button>
               )}
               {onClose && (

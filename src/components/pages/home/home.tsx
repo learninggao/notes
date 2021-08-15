@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import './home.scss'
 import { useAppDispatch, useAppSelector } from '../../../state/reduxHooks'
 import { fetchNotesForTopic, fetchTopics } from '../../../state/actions'
+import { AddTopic } from '../../addTopic/addTopic'
 
 export const Home = () => {
   const dispatch = useAppDispatch()
@@ -43,7 +44,7 @@ export const Home = () => {
                 </div>
                 <div className="oreo-foot">
                   <div className="foot-item-wrapper">
-                    <div className="oreo-item">Add Topic</div>
+                    <AddTopic />
                   </div>
                 </div>
               </div>

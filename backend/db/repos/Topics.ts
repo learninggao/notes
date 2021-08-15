@@ -24,6 +24,15 @@ export class TopicsRepository {
     return this.db.one('SELECT * From topic where id = $1', [id])
   }
 
+  async createTopic(topicName: string): Promise<Topic> {
+    const topic = await this.db.one(
+      'INSERT into topic (topic_name) values ($1) RETURNING *',
+      [topicName]
+    )
+    console.log('topic', topic)
+    return transformer(topic)
+  }
+
   async getAll(): Promise<Topic[]> {
     return this.db.map('SELECT * from topic', [], transformer)
   }

@@ -1,23 +1,16 @@
 header.bulma-modal-head {
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .modal-card {
-  min-width: 80vw;
+  min-width: 200px;
 
-  &.confirm {
-    width: 500px;
+  .modal-card-foot {
+    display: flex;
+    justify-content: flex-end;
   }
 
   .modal-card-foot {
     padding: 1rem;
-  }
-}
-
-/* variations */
-.modal-card.confirm {
-  .modal-card-foot {
-    display: flex;
-    justify-content: flex-end;
   }
 }
