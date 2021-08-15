@@ -18,6 +18,5 @@ export const usePortal = () => {
 
     return wrapperRef.current
   }
-
   return createWrapper()
 }

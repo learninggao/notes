@@ -6,7 +6,6 @@ import { Note, Topic } from '../../../backend/db/model'
 export const API_URL = 'http://localhost:3001/api'
 export type ReqParamKey = 'page'
 export type ReqParams = Partial<Record<ReqParamKey, string>>
-type ValueOf<T> = T[keyof T]
 
 /* topics */
 
