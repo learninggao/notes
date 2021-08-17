@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react'
+import cn from 'classnames'
 import './home.scss'
 import { useAppDispatch, useAppSelector } from '../../../state/reduxHooks'
 import { fetchNotesForTopic, fetchTopics } from '../../../state/actions'
 import { AddTopic } from '../../addTopic/addTopic'
+import { AddNoteTrigger } from '../../addNote/addNoteTrigger'
 
 export const Home = () => {
   const dispatch = useAppDispatch()
-  const { topics, activeTopicId } = useAppSelector((state) => ({
+  const { topics, activeTopicId, activeNoteId } = useAppSelector((state) => ({
+    activeNoteId: state.note.activeNoteId,
     activeTopicId: state.topic.activeTopicId,
     topics: state.topic.list,
   }))
@@ -36,7 +39,12 @@ export const Home = () => {
                 <div className="oreo-body">
                   <div className="oreo-item-wrapper">
                     {topics.map((topic) => (
-                      <div key={topic.id} className="oreo-item">
+                      <div
+                        key={topic.id}
+                        className={cn('oreo-item topic', {
+                          active: topic.id === activeTopicId,
+                        })}
+                      >
                         {topic.topicName}
                       </div>
                     ))}
@@ -52,15 +60,38 @@ export const Home = () => {
                 <div className="oreo-body">
                   <div className="oreo-item-wrapper">
                     {notes.map((note) => (
-                      <div key={note.id} className="oreo-item">
-                        {note.title}
+                      <div
+                        key={note.id}
+                        className={cn('oreo-item note', {
+                          active: note.id === activeNoteId,
+                        })}
+                      >
+                        <div className="note-item">
+                          <div className="primary-info">
+                            <span className="note-title">{note.title}</span>
+                            <span className="note-type">{note.type}</span>
+                          </div>
+                          <div className="secondary-info">
+                            <div className="note-description">
+                              {note.description}
+                            </div>
+                            <div className="tags-wrapper">
+                              {note.tags.length > 0 &&
+                                note.tags.map((tag, index) => (
+                                  <a key={index} className="tag-item">
+                                    {`#${tag}`}
+                                  </a>
+                                ))}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
                 <div className="oreo-foot">
                   <div className="foot-item-wrapper">
-                    <div className="oreo-item">Add Topic</div>
+                    <AddNoteTrigger />
                   </div>
                 </div>
               </div>

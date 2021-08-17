@@ -1,5 +1,5 @@
 import { createAction, createSlice } from '@reduxjs/toolkit'
-import { Note } from '../../../backend/db/model'
+import { Note } from '../../types'
 import { fetchNotesForTopic } from '../actions'
 
 type APPState = {

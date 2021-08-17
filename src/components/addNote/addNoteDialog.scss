@@ -1,0 +1,44 @@
+.create-note {
+  .note-label {
+    font-weight: 700;
+    margin-bottom: 0.5em;
+  }
+
+  .field.inline {
+    display: inline-flex;
+  }
+
+  input[type='radio'] {
+    margin-right: 6px;
+  }
+
+  .control {
+    &.note-type {
+      margin-bottom: 0.75em;
+      display: inline-flex;
+      flex-direction: column;
+
+      .radio-controls {
+        height: 35px;
+        display: flex;
+        align-items: center;
+        margin-right: 40px;
+      }
+    }
+  }
+
+  .form-error {
+    color: #e04949;
+  }
+
+  .form-control {
+    display: flex;
+    justify-content: flex-end;
+
+    .button {
+      &:last-of-type {
+        margin-left: 8px;
+      }
+    }
+  }
+}

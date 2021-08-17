@@ -1,5 +1,5 @@
 import { createAction, createSlice } from '@reduxjs/toolkit'
-import { Topic } from '../../../backend/db/model'
+import { Topic } from '../../types'
 import { fetchCreateTopic, fetchTopics } from '../actions'
 
 type APPState = {

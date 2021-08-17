@@ -10,6 +10,7 @@ create table topic (
 );
 
 -- link | code | image | exercise
+-- todo add type snippet
 create table note_type (
   type TEXT PRIMARY KEY
 );
