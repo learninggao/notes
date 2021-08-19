@@ -37,6 +37,23 @@ create table note (
   topic_id integer REFERENCES topic (id)
 );
 
+create table note_dive (
+  id serial PRIMARY KEY,
+  default_order serial NOT NULL,
+  custom_order integer NOT NULL DEFAULT 10000,
+  type text REFERENCES note_type (type) ON UPDATE CASCADE,
+  description TEXT,
+  url TEXT,
+  level text REFERENCES note_level (level) ON UPDATE CASCADE,
+  content TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  title TEXT NOT NULL,
+  tags text[] NOT NULL DEFAULT '{}',
+  notes text[] NOT NULL DEFAULT '{}',
+  todos text[] NOT NULL DEFAULT '{}',
+  note_id integer REFERENCES note (id)
+);
+
 create table tag (
   id serial PRIMARY KEY,
   tag_name TEXT NOT NULL,

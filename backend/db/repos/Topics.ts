@@ -29,7 +29,6 @@ export class TopicsRepository {
       'INSERT into topic (topic_name) values ($1) RETURNING *',
       [topicName]
     )
-    console.log('topic', topic)
     return transformer(topic)
   }
 

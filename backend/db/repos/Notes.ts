@@ -1,6 +1,8 @@
 import cloneDeep from 'clone-deep'
 import { IDatabase, IMain } from 'pg-promise'
+import { NotePayload } from '../../../src/components/addNote/addNoteDialog'
 import { Note, NoteDb } from '../model'
+import { getInsertSql } from './utils'
 
 function transformer(noteDb: NoteDb): Note {
   const tNote: Partial<NoteDb & Note> = cloneDeep(noteDb)
@@ -24,6 +26,12 @@ export class NotesRepository {
       [id],
       transformer
     )
+  }
+
+  async createNote(params: NotePayload): Promise<Note> {
+    const sql = getInsertSql('note', params)
+    const note = await this.db.one(sql, params)
+    return transformer(note)
   }
 
   async getById(id: number): Promise<NoteDb> {

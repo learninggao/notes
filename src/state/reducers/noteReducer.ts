@@ -1,6 +1,6 @@
 import { createAction, createSlice } from '@reduxjs/toolkit'
 import { Note } from '../../types'
-import { fetchNotesForTopic } from '../actions'
+import { fetchCreateNote, fetchNotesForTopic } from '../actions'
 
 type APPState = {
   activeNoteId: number
@@ -30,6 +30,12 @@ const noteReducer = createSlice({
         state.list = payload
         state.activeNoteId = payload[0].id
         state.activeNoteIndex = 0
+      })
+      // TODO: fetchCreate.pending
+      .addCase(fetchCreateNote.fulfilled, (state, { payload }) => {
+        state.list.push(payload)
+        state.activeNoteId = payload.id
+        state.activeNoteIndex = state.list.length - 1
       })
   },
   initialState,

@@ -1,6 +1,8 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React from 'react'
 import * as yup from 'yup'
+import { fetchCreateNote } from '../../state/actions'
+import { useAppDispatch, useAppSelector } from '../../state/reduxHooks'
 
 import { Modal } from '../modal/modal'
 
@@ -9,12 +11,12 @@ import './addNoteDialog.scss'
 const noteSchema = yup.object({
   description: yup.string().notRequired(),
   level: yup.string().required(),
-  noteType: yup.string().required(),
   title: yup.string().required(),
+  type: yup.string().required(),
   url: yup.string().required(),
 })
 
-// type Note = yup.InferType<typeof noteSchema>
+export type NotePayload = yup.InferType<typeof noteSchema> & { topicId: number }
 interface AddNoteDialogProps {
   getContainerProps: () => any
   hide: () => void
@@ -24,19 +26,22 @@ export const AddNoteDialog: React.FC<AddNoteDialogProps> = ({
   getContainerProps,
   hide,
 }) => {
+  const topicId = useAppSelector((state) => state.topic.activeTopicId)
+  const dispatch = useAppDispatch()
+
   return (
     <Modal title="New Note" className="add-note" {...getContainerProps()}>
       <Formik
         initialValues={{
           description: '',
           level: 'misc',
-          noteType: 'link',
           title: '',
+          type: 'link',
           url: '',
         }}
         validationSchema={noteSchema}
         onSubmit={(values, { setSubmitting }) => {
-          console.log(values)
+          dispatch(fetchCreateNote({ ...values, topicId }))
           setSubmitting(false)
           hide()
         }}
@@ -50,23 +55,23 @@ export const AddNoteDialog: React.FC<AddNoteDialogProps> = ({
                     <h3 className="note-label">Note Type</h3>
                     <div className="radio-controls">
                       <label className="radio">
-                        <Field type="radio" name="noteType" value="link" />
+                        <Field type="radio" name="type" value="link" />
                         Link
                       </label>
                       <label className="radio">
-                        <Field type="radio" name="noteType" value="image" />
+                        <Field type="radio" name="type" value="image" />
                         Image
                       </label>
                       <label className="radio">
-                        <Field type="radio" name="noteType" value="code" />
+                        <Field type="radio" name="type" value="code" />
                         Code
                       </label>
                       <label className="radio">
-                        <Field type="radio" name="noteType" value="exercise" />
+                        <Field type="radio" name="type" value="exercise" />
                         Exercise
                       </label>
                       <label className="radio">
-                        <Field type="radio" name="noteType" value="snippet" />
+                        <Field type="radio" name="type" value="snippet" />
                         Snippet
                       </label>
                     </div>
