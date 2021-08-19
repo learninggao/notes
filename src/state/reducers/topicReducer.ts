@@ -18,9 +18,14 @@ const initialState: APPState = {
   status: 'idle',
 }
 
+export const setActiveTopic = createAction<number>('set_active_topic')
+
 const topicReducer = createSlice({
   extraReducers: (builder) => {
     builder
+      .addCase(setActiveTopic, (state, { payload }) => {
+        state.activeTopicId = payload
+      })
       .addCase(fetchTopics.pending, (state) => {
         state.status = 'loading'
         state.error = null
@@ -28,7 +33,7 @@ const topicReducer = createSlice({
       .addCase(fetchTopics.fulfilled, (state, { payload }) => {
         state.status = 'idle'
         state.list = payload
-        state.activeTopicId = payload[0].id
+        state.activeTopicId = payload[0]?.id
         state.activeTopicIndex = 0
       })
       .addCase(fetchCreateTopic.pending, (state) => {

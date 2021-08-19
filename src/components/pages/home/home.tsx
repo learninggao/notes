@@ -5,6 +5,8 @@ import { useAppDispatch, useAppSelector } from '../../../state/reduxHooks'
 import { fetchNotesForTopic, fetchTopics } from '../../../state/actions'
 import { AddTopic } from '../../addTopic/addTopic'
 import { AddNoteTrigger } from '../../addNote/addNoteTrigger'
+import { setActiveTopic } from '../../../state/reducers/topicReducer'
+import { setActiveNote } from '../../../state/reducers/noteReducer'
 
 export const Home = () => {
   const dispatch = useAppDispatch()
@@ -44,6 +46,7 @@ export const Home = () => {
                         className={cn('oreo-item topic', {
                           active: topic.id === activeTopicId,
                         })}
+                        onClick={() => dispatch(setActiveTopic(topic.id))}
                       >
                         {topic.topicName}
                       </div>
@@ -65,6 +68,7 @@ export const Home = () => {
                         className={cn('oreo-item note', {
                           active: note.id === activeNoteId,
                         })}
+                        onClick={() => dispatch(setActiveNote(note.id))}
                       >
                         <div className="note-item">
                           <div className="primary-info">
