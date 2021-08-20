@@ -5,6 +5,7 @@ import { Portal } from '../portal/Portal'
 import { useAppDispatch, useAppSelector } from '../../state/reduxHooks'
 import { typeTag } from '../../state/reducers/tagReducer'
 import { fetchAddExistingTagToNote } from '../../state/actions'
+import { fetchRemoveTagFromNote } from '../../state/actions/noteActions'
 
 export interface TagBoxProps {
   currentTags: string[]
@@ -56,7 +57,13 @@ export const TagBox: React.VFC<TagBoxProps> = ({
       <div className="wrap">
         <div className="tags-wrap">
           {currentTags.map((tag) => (
-            <button key={tag} className="content-tag">
+            <button
+              key={tag}
+              className="content-tag"
+              onClick={() => {
+                dispatch(fetchRemoveTagFromNote({ noteId, tag }))
+              }}
+            >
               {tag}
             </button>
           ))}

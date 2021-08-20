@@ -5,6 +5,7 @@ import {
   fetchCreateNote,
   fetchNotesForTopic,
 } from '../actions'
+import { fetchRemoveTagFromNote } from '../actions/noteActions'
 
 type APPState = {
   activeNoteId: number
@@ -47,7 +48,11 @@ const noteReducer = createSlice({
         state.activeNoteIndex = state.list.length - 1
       })
       .addCase(fetchAddExistingTagToNote.fulfilled, (state, { payload }) => {
-        const noteIndex = state.list.findIndex((tag) => tag.id === payload.id)
+        const noteIndex = state.list.findIndex((note) => note.id === payload.id)
+        state.list.splice(noteIndex, 1, payload)
+      })
+      .addCase(fetchRemoveTagFromNote.fulfilled, (state, { payload }) => {
+        const noteIndex = state.list.findIndex((note) => note.id === payload.id)
         state.list.splice(noteIndex, 1, payload)
       })
   },

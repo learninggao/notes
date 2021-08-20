@@ -3,6 +3,7 @@ import cors from 'cors'
 import { IndexRouter } from './routes'
 import { CreateRouter } from './routes/create'
 import { UpdateRouter } from './routes/update'
+import { DeleteRouter } from './routes/delete'
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.use(express.json())
 app.use(IndexRouter)
 app.use(CreateRouter)
 app.use(UpdateRouter)
+app.use(DeleteRouter)
 
 if (process.env.NODE_ENV === 'production') {
   // public for serving assets

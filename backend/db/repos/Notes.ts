@@ -22,7 +22,7 @@ export class NotesRepository {
 
   async getByTopic(id: number): Promise<Note[]> {
     return this.db.map(
-      'SELECT * from note where topic_id = $1',
+      'SELECT * from note where topic_id = $1 ORDER BY default_order ASC',
       [id],
       transformer
     )
@@ -53,15 +53,51 @@ export class NotesRepository {
       'SELECT id from tag where tag_name = $1',
       [tag]
     )
-    // TODO candidate for transaction
-    await this.db.none(
-      'INSERT into note_tag (note_id, tag_id) VALUES ($1, $2)',
-      [noteId, tagId]
+
+    return this.db
+      .tx((t) => {
+        const q1 = this.db.none(
+          'INSERT into note_tag (note_id, tag_id) VALUES ($1, $2)',
+          [noteId, tagId]
+        )
+        const q2 = this.db.one(
+          'UPDATE note SET tags = array_append(tags, $1) where id = $2 returning *',
+          [tag, noteId]
+        )
+        return t.batch([q1, q2])
+      })
+      .then((data) => {
+        return transformer(data[1])
+      })
+  }
+
+  async removeExistingTag({
+    noteId,
+    tag,
+  }: {
+    noteId: number
+    tag: string
+  }): Promise<Note> {
+    // const {id: tagId } = await this.db.tags
+    const { id: tagId } = await this.db.one(
+      'SELECT id from tag where tag_name = $1',
+      [tag]
     )
-    return this.db.one(
-      'UPDATE note SET tags = array_append(tags, $1) where id = $2 returning *',
-      [tag, noteId]
-    )
+    return this.db
+      .tx((t) => {
+        const q1 = t.one(
+          'Update note SET tags = array_remove(tags, $1) where id = $2 returning *',
+          [tag, noteId]
+        )
+        const q2 = t.none(
+          'DELETE from note_tag where note_id = $1 and tag_id = $2',
+          [noteId, tagId]
+        )
+        return t.batch([q1, q2])
+      })
+      .then((data) => {
+        return transformer(data[0])
+      })
   }
 
   async updateOne(params: {
