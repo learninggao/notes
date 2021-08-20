@@ -10,6 +10,7 @@ export const API_URL = 'http://localhost:3001/api'
 
 const TOPIC_API_URL = `${API_URL}/topic`
 const NOTE_API_URL = `${API_URL}/note`
+const TAG_API_URL = `${API_URL}/tag`
 
 /* topics */
 
@@ -51,3 +52,24 @@ export const fetchCreateNote = createAsyncThunk(
     return data
   }
 )
+
+export const fetchAddExistingTagToNote = createAsyncThunk(
+  'add_existing_tag_to_note',
+  async ({ noteId, tag }: { noteId: number; tag: string }) => {
+    const requestURL = NOTE_API_URL
+    const { data } = await axios.put<Note>(requestURL, {
+      noteId,
+      operation: 'ASSOCIATE_TAG',
+      tag,
+    })
+    return data
+  }
+)
+
+/* tags */
+
+export const fetchTags = createAsyncThunk('create_async_thunk', async () => {
+  const requestURL = TAG_API_URL
+  const { data } = await axios.get<string[]>(requestURL)
+  return data
+})

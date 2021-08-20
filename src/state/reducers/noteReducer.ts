@@ -1,7 +1,10 @@
 import { createAction, createSlice } from '@reduxjs/toolkit'
 import { Note } from '../../types'
-import { fetchCreateNote, fetchNotesForTopic } from '../actions'
-import { setActiveTopic } from './topicReducer'
+import {
+  fetchAddExistingTagToNote,
+  fetchCreateNote,
+  fetchNotesForTopic,
+} from '../actions'
 
 type APPState = {
   activeNoteId: number
@@ -42,6 +45,10 @@ const noteReducer = createSlice({
         state.list.push(payload)
         state.activeNoteId = payload.id
         state.activeNoteIndex = state.list.length - 1
+      })
+      .addCase(fetchAddExistingTagToNote.fulfilled, (state, { payload }) => {
+        const noteIndex = state.list.findIndex((tag) => tag.id === payload.id)
+        state.list.splice(noteIndex, 1, payload)
       })
   },
   initialState,

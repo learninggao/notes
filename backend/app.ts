@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express'
 import cors from 'cors'
 import { IndexRouter } from './routes'
 import { CreateRouter } from './routes/create'
+import { UpdateRouter } from './routes/update'
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use(express.json())
 /* routes */
 app.use(IndexRouter)
 app.use(CreateRouter)
+app.use(UpdateRouter)
 
 if (process.env.NODE_ENV === 'production') {
   // public for serving assets

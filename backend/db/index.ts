@@ -1,5 +1,10 @@
 import pgPromise, { IMain, IInitOptions } from 'pg-promise'
-import { IExtensions, NotesRepository, TopicsRepository } from './repos'
+import {
+  IExtensions,
+  NotesRepository,
+  TagRepository,
+  TopicsRepository,
+} from './repos'
 
 type ExtendedProtocol = pgPromise.IDatabase<IExtensions> & IExtensions
 
@@ -7,6 +12,7 @@ const initOptions: IInitOptions<IExtensions> = {
   extend(obj: ExtendedProtocol) {
     obj.notes = new NotesRepository(obj, pgp)
     obj.topics = new TopicsRepository(obj, pgp)
+    obj.tags = new TagRepository(obj, pgp)
   },
 }
 

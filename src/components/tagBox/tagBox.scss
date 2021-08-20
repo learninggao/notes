@@ -1,0 +1,86 @@
+@import '~scss/variables';
+$tag-bg: #e8e8e8;
+$outline-color: hsl(207, 80%, 49%);
+
+.tag-box {
+  padding: 0.25rem;
+  font-size: 0.9rem;
+  width: 280px;
+  background: $tag-bg;
+  border-radius: 4px;
+
+  .wrap {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &.focused {
+    // outline: 1px solid $outline-color;
+    box-shadow: 0 0 0 1px $outline-color;
+    border-radius: 4px;
+    background: white;
+
+    .tag-input {
+      background: white;
+    }
+    .content-tag {
+      background: white;
+    }
+  }
+
+  .tag-input {
+    border: 0;
+    outline: 0;
+    padding: 5px;
+    background-color: $tag-bg;
+    display: flex;
+    flex: 1;
+  }
+
+  .content-tag {
+    background: $tag-bg;
+    display: inline-flex;
+    height: 25px;
+    align-items: center;
+    cursor: pointer;
+    outline: 0;
+    border: 0;
+    padding: 0;
+    margin-left: 4px;
+    color: $link-blue;
+
+    &:before {
+      content: '\22D5';
+    }
+
+    &:hover {
+      color: $pink;
+      &:before {
+        content: '\2715';
+      }
+    }
+  }
+}
+
+.suggestion-box {
+  background: white;
+  border-radius: 4px;
+  border: 1px solid $border-gray;
+  box-shadow: 0px 2px 4px $box-shadow-color;
+
+  li {
+    padding: 4px 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+
+    .misc {
+      color: lighten($text-gray, 30%);
+      font-size: 0.9em;
+    }
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+}

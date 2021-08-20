@@ -22,4 +22,11 @@ router.get('/api/note', async (req: Request, res: Response) => {
   res.send(notes)
 })
 
+/* tags */
+
+router.get('/api/tag', async (req: Request, res: Response) => {
+  const tags = await db.tags.getTags()
+  res.send(tags)
+})
+
 export { router as IndexRouter }

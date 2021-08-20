@@ -1,27 +1,40 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import cn from 'classnames'
 import './home.scss'
 import { useAppDispatch, useAppSelector } from '../../../state/reduxHooks'
-import { fetchNotesForTopic, fetchTopics } from '../../../state/actions'
+import {
+  fetchNotesForTopic,
+  fetchTags,
+  fetchTopics,
+} from '../../../state/actions'
 import { AddTopic } from '../../addTopic/addTopic'
 import { AddNoteTrigger } from '../../addNote/addNoteTrigger'
 import { setActiveTopic } from '../../../state/reducers/topicReducer'
 import { setActiveNote } from '../../../state/reducers/noteReducer'
+import { TagBox } from '../../tagBox/tagBox'
 
 export const Home = () => {
   const dispatch = useAppDispatch()
-  const { topics, activeTopicId, activeNoteId } = useAppSelector((state) => ({
-    activeNoteId: state.note.activeNoteId,
-    activeTopicId: state.topic.activeTopicId,
-    topics: state.topic.list,
-  }))
+  const { topics, notes, activeTopicId, activeNoteId } = useAppSelector(
+    (state) => ({
+      activeNoteId: state.note.activeNoteId,
+      activeTopicId: state.topic.activeTopicId,
+      notes: state.note.list,
+      topics: state.topic.list,
+    })
+  )
 
-  const { notes } = useAppSelector((state) => ({
-    notes: state.note.list,
-  }))
+  const activeNote = useMemo(() => {
+    if (activeNoteId === -1) {
+      return null
+    } else {
+      return notes.find((note) => note.id === activeNoteId)
+    }
+  }, [activeNoteId, notes])
 
   useEffect(() => {
     dispatch(fetchTopics())
+    dispatch(fetchTags())
   }, [dispatch])
 
   useEffect(() => {
@@ -100,6 +113,30 @@ export const Home = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="main-content">
+          <div className="content-section">
+            {activeNote && (
+              <>
+                <div className="content-header">
+                  <h1 className="content-title">{activeNote.title}</h1>
+                  <div className="content-date">{activeNote.createdAt}</div>
+                </div>
+                <div className="content-main">
+                  <div className="content-link">
+                    <a href={activeNote.url} target="_blank" rel="noreferrer">
+                      {activeNote.url}
+                    </a>
+                  </div>
+                  <div className="description">{activeNote.description}</div>
+                  <TagBox
+                    noteId={activeNote.id}
+                    currentTags={activeNote.tags}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

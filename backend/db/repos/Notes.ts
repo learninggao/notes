@@ -42,6 +42,28 @@ export class NotesRepository {
     return this.db.map('SELECT * from note', [], transformer)
   }
 
+  async addExistingTag({
+    noteId,
+    tag,
+  }: {
+    noteId: number
+    tag: string
+  }): Promise<Note> {
+    const { id: tagId } = await this.db.one(
+      'SELECT id from tag where tag_name = $1',
+      [tag]
+    )
+    // TODO candidate for transaction
+    await this.db.none(
+      'INSERT into note_tag (note_id, tag_id) VALUES ($1, $2)',
+      [noteId, tagId]
+    )
+    return this.db.one(
+      'UPDATE note SET tags = array_append(tags, $1) where id = $2 returning *',
+      [tag, noteId]
+    )
+  }
+
   async updateOne(params: {
     id: number
     key: string

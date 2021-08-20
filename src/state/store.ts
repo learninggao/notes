@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import noteReducer from './reducers/noteReducer'
+import tagReducer from './reducers/tagReducer'
 import topicReducer from './reducers/topicReducer'
 
 // todo
@@ -9,6 +10,7 @@ import topicReducer from './reducers/topicReducer'
 export const store = configureStore({
   reducer: {
     note: noteReducer.reducer,
+    tag: tagReducer.reducer,
     topic: topicReducer.reducer,
   },
 })

@@ -60,6 +60,8 @@ create table tag (
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+
+
 create table note_tag (
   id serial PRIMARY KEY,
   note_id integer REFERENCES note (id),
@@ -73,4 +75,7 @@ ALTER "level" TYPE text,
 ALTER "level" SET DEFAULT 'misc',
 ALTER "level" DROP NOT NULL;
 
+ALTER TABLE "tag"
+ADD CONSTRAINT unique_tagname UNIQUE (tag_name);
 
+CREATE INDEX idx_tagname on tag (tag_name);
