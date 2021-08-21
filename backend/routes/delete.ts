@@ -15,4 +15,15 @@ router.delete('/api/note', async (req: Request, res: Response) => {
   res.sendStatus(400)
 })
 
+/* tags */
+
+router.delete('/api/tags/prune', async (req: Request, res: Response) => {
+  try {
+    await db.tags.pruneTags()
+    res.sendStatus(200)
+  } catch (err) {
+    res.status(500).send({ err: err.message })
+  }
+})
+
 export { router as DeleteRouter }

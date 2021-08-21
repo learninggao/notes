@@ -36,12 +36,6 @@ export const TagBox: React.VFC<TagBoxProps> = ({
 
   const filteredTags = useAppSelector((state) => state.tag.filteredList)
 
-  const wipeInput = useCallback(() => {
-    console.log(inputRef.current)
-    dispatch(typeTag(''))
-    inputRef.current!.value = ''
-  }, [dispatch])
-
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
       event.stopImmediatePropagation()
@@ -116,9 +110,10 @@ export const TagBox: React.VFC<TagBoxProps> = ({
                       onClick={() => {
                         if (!bool) {
                           dispatch(fetchAddExistingTagToNote({ noteId, tag }))
+                          setTag('')
                         } else {
                           dispatch(fetchAddNewTag({ noteId, tag }))
-                          wipeInput()
+                          setTag('')
                         }
                       }}
                     >
