@@ -4,6 +4,11 @@ export {
   fetchCreateTopic,
 } from './topicActions'
 
-export { fetchCreateNote, fetchAddExistingTagToNote } from './noteActions'
+export {
+  fetchCreateNote,
+  fetchAddExistingTagToNote,
+  fetchAddNewTag,
+  fetchRemoveTagFromNote,
+} from './noteActions'
 
 export { fetchTags } from './tagActions'

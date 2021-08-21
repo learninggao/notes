@@ -80,9 +80,12 @@
     font-size: 0.9rem;
   }
   .tags-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+
     .tag-item {
       font-size: 0.9rem;
-      margin-left: 6px;
+      margin-right: 6px;
       &:first-of-type {
         margin-left: 0;
       }

@@ -42,3 +42,15 @@ export const fetchRemoveTagFromNote = createAsyncThunk(
     return data
   }
 )
+
+export const fetchAddNewTag = createAsyncThunk(
+  'add_new_tag',
+  async (params: { noteId: number; tag: string }) => {
+    const { data } = await axios.put<Note>(NOTE_API_URL, {
+      ...params,
+      operation: 'ADD_NEW_TAG',
+    })
+
+    return data
+  }
+)

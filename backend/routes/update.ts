@@ -13,6 +13,11 @@ router.put('/api/note', async (req: Request, res: Response) => {
     const note = await db.notes.addExistingTag({ noteId, tag })
     res.send(note)
     return
+  } else if (operation === 'ADD_NEW_TAG') {
+    const { noteId, tag } = req.body
+    const note = await db.notes.addNewTag({ noteId, tag })
+    res.send(note)
+    return
   }
   res.sendStatus(400)
 })

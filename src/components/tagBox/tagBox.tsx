@@ -1,11 +1,20 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import cn from 'classnames'
 import './tagBox.scss'
 import { Portal } from '../portal/Portal'
 import { useAppDispatch, useAppSelector } from '../../state/reduxHooks'
 import { typeTag } from '../../state/reducers/tagReducer'
-import { fetchAddExistingTagToNote } from '../../state/actions'
-import { fetchRemoveTagFromNote } from '../../state/actions/noteActions'
+import {
+  fetchAddExistingTagToNote,
+  fetchAddNewTag,
+  fetchRemoveTagFromNote,
+} from '../../state/actions'
 
 export interface TagBoxProps {
   currentTags: string[]
@@ -26,6 +35,12 @@ export const TagBox: React.VFC<TagBoxProps> = ({
   const dispatch = useAppDispatch()
 
   const filteredTags = useAppSelector((state) => state.tag.filteredList)
+
+  const wipeInput = useCallback(() => {
+    console.log(inputRef.current)
+    dispatch(typeTag(''))
+    inputRef.current!.value = ''
+  }, [dispatch])
 
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
@@ -101,6 +116,9 @@ export const TagBox: React.VFC<TagBoxProps> = ({
                       onClick={() => {
                         if (!bool) {
                           dispatch(fetchAddExistingTagToNote({ noteId, tag }))
+                        } else {
+                          dispatch(fetchAddNewTag({ noteId, tag }))
+                          wipeInput()
                         }
                       }}
                     >

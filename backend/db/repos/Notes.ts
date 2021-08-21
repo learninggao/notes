@@ -17,6 +17,11 @@ function transformer(noteDb: NoteDb): Note {
   return tNote as Note
 }
 
+interface TagParam {
+  noteId: number
+  tag: string
+}
+
 export class NotesRepository {
   constructor(private db: IDatabase<any>, private pgp: IMain) {}
 
@@ -42,13 +47,7 @@ export class NotesRepository {
     return this.db.map('SELECT * from note', [], transformer)
   }
 
-  async addExistingTag({
-    noteId,
-    tag,
-  }: {
-    noteId: number
-    tag: string
-  }): Promise<Note> {
+  async addExistingTag({ noteId, tag }: TagParam): Promise<Note> {
     const { id: tagId } = await this.db.one(
       'SELECT id from tag where tag_name = $1',
       [tag]
@@ -71,13 +70,7 @@ export class NotesRepository {
       })
   }
 
-  async removeExistingTag({
-    noteId,
-    tag,
-  }: {
-    noteId: number
-    tag: string
-  }): Promise<Note> {
+  async removeExistingTag({ noteId, tag }: TagParam): Promise<Note> {
     // const {id: tagId } = await this.db.tags
     const { id: tagId } = await this.db.one(
       'SELECT id from tag where tag_name = $1',
@@ -98,6 +91,29 @@ export class NotesRepository {
       .then((data) => {
         return transformer(data[0])
       })
+  }
+
+  async addNewTag({ noteId, tag }: TagParam): Promise<Note> {
+    return this.db
+      .task((t) => {
+        return t
+          .one(
+            'INSERT into tag (tag_name) VALUES ($1) returning id',
+            [tag],
+            (item: { id: number }) => item.id
+          )
+          .then(async (id: number) => {
+            await t.none(
+              'INSERT into note_tag (note_id, tag_id) VALUES ($1, $2)',
+              [noteId, id]
+            )
+            return t.one(
+              'UPDATE note set tags = array_append(tags, $1) where id = $2 returning *',
+              [tag, noteId]
+            )
+          })
+      })
+      .then((data) => transformer(data))
   }
 
   async updateOne(params: {
